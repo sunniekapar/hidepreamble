@@ -1,71 +1,111 @@
-# hidepreamble README
+# **Hide Preamble Comments - VS Code Extension**
 
-This is the README for your extension "hidepreamble". After writing up a brief description, we recommend including the following sections.
+## **Overview**
 
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+The _Hide Preamble Comments_ extension automatically detects and folds preamble comments in your files. This helps you reduce clutter and focus on the main content of your code by hiding long, block comments at the beginning of files (such as license headers, documentation, or other metadata).
 
 ---
 
-## Following extension guidelines
+## **Features**
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+- Detects and folds preamble comments in all file types.
+- Automatically folds or unfolds the preamble when a file is opened.
+- Allows you to toggle the folding of preamble comments via a command.
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+---
 
-## Working with Markdown
+## **How It Works**
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+1. **Detection:** The extension uses a regular expression to find preamble comments, defined as block comments starting with `/*` and ending with `*/`.
+2. **Folding:** When a preamble is detected, it automatically folds the comment block when the file is opened.
+3. **Toggle Command:** You can manually toggle the folding of the preamble using the command `Hide Preamble: Toggle`.
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+---
 
-## For more information
+## **Installation**
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+1. Install the extension from the VS Code Marketplace (or manually from a `.vsix` package).
+2. Reload or restart VS Code to activate the extension.
 
-**Enjoy!**
+---
+
+## **Usage**
+
+### **Automatic Folding**
+
+- When you open a file that contains a preamble comment, the extension automatically folds it.
+
+### **Toggle Preamble Folding**
+
+- You can toggle the folding of the preamble using the command palette:
+  1. Press `Ctrl + Shift + P` (or `Cmd + Shift + P` on macOS).
+  2. Search for `Hide Preamble: Toggle`.
+  3. Run the command to fold or unfold the preamble comment.
+
+---
+
+## **Example**
+
+Given the following preamble comment at the top of a file:
+
+```javascript
+/*
+  This is a preamble comment.
+  It might contain license information, metadata, or documentation.
+*/
+
+function example() {
+  console.log('Hello, world!');
+}
+```
+
+The extension will automatically detect and fold the comment block, so you only see a collapsed version when opening the file.
+
+---
+
+## **Commands**
+
+| Command                 | Description                                  |
+| ----------------------- | -------------------------------------------- |
+| `Hide Preamble: Toggle` | Toggles the folding of the preamble comment. |
+
+---
+
+## **Configuration**
+
+This extension currently works on all file types and languages. There are no additional settings required.
+
+---
+
+## **Development**
+
+The extension code is written in TypeScript and leverages the VS Code API to interact with editors and documents. Key functionalities include:
+
+- Finding the preamble using a regex.
+- Folding and unfolding the preamble using VS Code's `editor.fold` and `editor.unfold` commands.
+- Registering a command (`hidepreamble.toggle`) to toggle the folding state.
+
+---
+
+## **Future Improvements**
+
+- Add customizable regex patterns for detecting preamble comments.
+- Support for language-specific comment styles.
+- Additional commands or settings for manual folding behavior.
+- Toggle copyright year and license name
+
+---
+
+## **Contributing**
+
+Contributions, issues, and feature requests are welcome! Feel free to fork the repository, submit pull requests, or open issues for suggestions.
+
+---
+
+## **License**
+
+This project is licensed under [MIT License](https://opensource.org/licenses/MIT).
+
+---
+
+Enjoy a cleaner, distraction-free coding experience with the Hide Preamble Comments extension! 🎉
