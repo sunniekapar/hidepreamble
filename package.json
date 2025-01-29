@@ -1,6 +1,6 @@
 {
   "name": "hidepreamble",
-  "displayName": "HidePreamble",
+  "displayName": "Hide Preamble",
   "description": "Hides preamble comments",
   "version": "0.0.1",
   "engines": {
@@ -9,13 +9,15 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "hidepreamble.helloWorld",
-        "title": "Hello World"
+        "command": "hidepreamble.toggle",
+        "title": "Toggle preamble comment"
       }
     ]
   },

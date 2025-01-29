@@ -1,26 +1,63 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "hidepreamble" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('hidepreamble.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from HidePreamble!');
-	});
-
-	context.subscriptions.push(disposable);
+function findPreamble(text: string) {
+  const preambleRegex = /^\/\*[\s\S]*?\*\//gm;
+  return preambleRegex.exec(text);
 }
 
-// This method is called when your extension is deactivated
+function findPosition(document: vscode.TextDocument, match: RegExpExecArray) {
+  const startPos = document.positionAt(match.index);
+  const endPos = document.positionAt(match.index + match[0].length);
+  return { startPos, endPos };
+}
+
+export function activate(context: vscode.ExtensionContext) {
+  const editorChangeDisposable = vscode.window.onDidChangeActiveTextEditor(
+    async (editor) => {
+      if (!editor) {
+        return;
+      }
+      const document = editor.document;
+
+      const text = document.getText();
+      const match = findPreamble(text);
+
+      if (!match) {
+        return [];
+      }
+
+      const { startPos, endPos } = findPosition(document, match);
+
+      const startLine = startPos.line;
+      const endLine = endPos.line;
+
+      const providerDisposable = vscode.languages.registerFoldingRangeProvider(
+        { language: '*' },
+        {
+          provideFoldingRanges: (_document, _context, _token) => {
+            return [new vscode.FoldingRange(startLine, endLine)];
+          },
+        }
+      );
+      context.subscriptions.push(providerDisposable);
+
+      await vscode.commands.executeCommand('editor.fold', {
+        levels: 1,
+        direction: 'up',
+        selectionLines: [startLine],
+      });
+    }
+  );
+  context.subscriptions.push(editorChangeDisposable);
+
+  const disposable = vscode.commands.registerCommand(
+    'hidepreamble.toggle',
+    () => {
+      vscode.window.showInformationMessage('Hello world');
+    }
+  );
+
+  context.subscriptions.push(disposable);
+}
+
 export function deactivate() {}
