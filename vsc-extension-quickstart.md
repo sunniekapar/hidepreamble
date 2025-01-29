@@ -1,44 +1,111 @@
-# Welcome to your VS Code Extension
+# **Hide Preamble Comments - VS Code Extension**
 
-## What's in the folder
+## **Overview**
 
-* This folder contains all of the files necessary for your extension.
-* `package.json` - this is the manifest file in which you declare your extension and command.
-  * The sample plugin registers a command and defines its title and command name. With this information VS Code can show the command in the command palette. It doesn’t yet need to load the plugin.
-* `src/extension.ts` - this is the main file where you will provide the implementation of your command.
-  * The file exports one function, `activate`, which is called the very first time your extension is activated (in this case by executing the command). Inside the `activate` function we call `registerCommand`.
-  * We pass the function containing the implementation of the command as the second parameter to `registerCommand`.
+The _Hide Preamble Comments_ extension automatically detects and folds preamble comments in your files. This helps you reduce clutter and focus on the main content of your code by hiding long, block comments at the beginning of files (such as license headers, documentation, or other metadata).
 
-## Get up and running straight away
+---
 
-* Press `F5` to open a new window with your extension loaded.
-* Run your command from the command palette by pressing (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac) and typing `Hello World`.
-* Set breakpoints in your code inside `src/extension.ts` to debug your extension.
-* Find output from your extension in the debug console.
+## **Features**
 
-## Make changes
+- Detects and folds preamble comments in all file types.
+- Automatically folds or unfolds the preamble when a file is opened.
+- Allows you to toggle the folding of preamble comments via a command.
 
-* You can relaunch the extension from the debug toolbar after changing code in `src/extension.ts`.
-* You can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your extension to load your changes.
+---
 
-## Explore the API
+## **How It Works**
 
-* You can open the full set of our API when you open the file `node_modules/@types/vscode/index.d.ts`.
+1. **Detection:** The extension uses a regular expression to find preamble comments, defined as block comments starting with `/*` and ending with `*/`.
+2. **Folding:** When a preamble is detected, it automatically folds the comment block when the file is opened.
+3. **Toggle Command:** You can manually toggle the folding of the preamble using the command `Hide Preamble: Toggle`.
 
-## Run tests
+---
 
-* Install the [Extension Test Runner](https://marketplace.visualstudio.com/items?itemName=ms-vscode.extension-test-runner)
-* Run the "watch" task via the **Tasks: Run Task** command. Make sure this is running, or tests might not be discovered.
-* Open the Testing view from the activity bar and click the Run Test" button, or use the hotkey `Ctrl/Cmd + ; A`
-* See the output of the test result in the Test Results view.
-* Make changes to `src/test/extension.test.ts` or create new test files inside the `test` folder.
-  * The provided test runner will only consider files matching the name pattern `**.test.ts`.
-  * You can create folders inside the `test` folder to structure your tests any way you want.
+## **Installation**
 
-## Go further
+1. Install the extension from the VS Code Marketplace (or manually from a `.vsix` package).
+2. Reload or restart VS Code to activate the extension.
 
-* [Follow UX guidelines](https://code.visualstudio.com/api/ux-guidelines/overview) to create extensions that seamlessly integrate with VS Code's native interface and patterns.
-* Reduce the extension size and improve the startup time by [bundling your extension](https://code.visualstudio.com/api/working-with-extensions/bundling-extension).
-* [Publish your extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) on the VS Code extension marketplace.
-* Automate builds by setting up [Continuous Integration](https://code.visualstudio.com/api/working-with-extensions/continuous-integration).
-* Integrate to the [report issue](https://code.visualstudio.com/api/get-started/wrapping-up#issue-reporting) flow to get issue and feature requests reported by users.
+---
+
+## **Usage**
+
+### **Automatic Folding**
+
+- When you open a file that contains a preamble comment, the extension automatically folds it.
+
+### **Toggle Preamble Folding**
+
+- You can toggle the folding of the preamble using the command palette:
+  1. Press `Ctrl + Shift + P` (or `Cmd + Shift + P` on macOS).
+  2. Search for `Hide Preamble: Toggle`.
+  3. Run the command to fold or unfold the preamble comment.
+
+---
+
+## **Example**
+
+Given the following preamble comment at the top of a file:
+
+```javascript
+/*
+  This is a preamble comment.
+  It might contain license information, metadata, or documentation.
+*/
+
+function example() {
+  console.log('Hello, world!');
+}
+```
+
+The extension will automatically detect and fold the comment block, so you only see a collapsed version when opening the file.
+
+---
+
+## **Commands**
+
+| Command                 | Description                                  |
+| ----------------------- | -------------------------------------------- |
+| `Hide Preamble: Toggle` | Toggles the folding of the preamble comment. |
+
+---
+
+## **Configuration**
+
+This extension currently works on all file types and languages. There are no additional settings required.
+
+---
+
+## **Development**
+
+The extension code is written in TypeScript and leverages the VS Code API to interact with editors and documents. Key functionalities include:
+
+- Finding the preamble using a regex.
+- Folding and unfolding the preamble using VS Code's `editor.fold` and `editor.unfold` commands.
+- Registering a command (`hidepreamble.toggle`) to toggle the folding state.
+
+---
+
+## **Future Improvements**
+
+- Add customizable regex patterns for detecting preamble comments.
+- Support for language-specific comment styles.
+- Additional commands or settings for manual folding behavior.
+- Toggle copyright year and license name
+
+---
+
+## **Contributing**
+
+Contributions, issues, and feature requests are welcome! Feel free to fork the repository, submit pull requests, or open issues for suggestions.
+
+---
+
+## **License**
+
+This project is licensed under [MIT License](https://opensource.org/licenses/MIT).
+
+---
+
+Enjoy a cleaner, distraction-free coding experience with the Hide Preamble Comments extension! 🎉
