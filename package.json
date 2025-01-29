@@ -3,6 +3,10 @@
   "displayName": "Hide Preamble",
   "description": "Hides preamble comments",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sunniekapar/hidepreamble.git"
+  },
   "engines": {
     "vscode": "^1.96.0"
   },
