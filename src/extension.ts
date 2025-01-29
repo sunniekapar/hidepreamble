@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 
+let preambleIsFolded = true;
+
 function findPreamble(text: string) {
   const preambleRegex = /^\/\*[\s\S]*?\*\//gm;
   return preambleRegex.exec(text);
@@ -11,9 +13,23 @@ function findPosition(document: vscode.TextDocument, match: RegExpExecArray) {
   return { startPos, endPos };
 }
 
+function foldPreamble(startLine: number) {
+  vscode.commands.executeCommand('editor.fold', {
+    selectionLines: [startLine],
+    levels: 1,
+  });
+}
+
+function unfoldPreamble(startLine: number) {
+  vscode.commands.executeCommand('editor.unfold', {
+    selectionLines: [startLine],
+    levels: 1,
+  });
+}
+
 export function activate(context: vscode.ExtensionContext) {
   const editorChangeDisposable = vscode.window.onDidChangeActiveTextEditor(
-    async (editor) => {
+    (editor) => {
       if (!editor) {
         return;
       }
@@ -41,11 +57,10 @@ export function activate(context: vscode.ExtensionContext) {
       );
       context.subscriptions.push(providerDisposable);
 
-      await vscode.commands.executeCommand('editor.fold', {
-        levels: 1,
-        direction: 'up',
-        selectionLines: [startLine],
-      });
+      preambleIsFolded ? foldPreamble(startLine) : unfoldPreamble(startLine);
+      vscode.window.showInformationMessage(
+        preambleIsFolded ? 'fold' : 'unfold'
+      );
     }
   );
   context.subscriptions.push(editorChangeDisposable);
@@ -53,7 +68,25 @@ export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand(
     'hidepreamble.toggle',
     () => {
-      vscode.window.showInformationMessage('Hello world');
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        return;
+      }
+
+      const match = findPreamble(editor.document.getText());
+      if (!match) {
+        return;
+      }
+      const { startPos } = findPosition(editor.document, match);
+      const startLine = startPos.line;
+
+      if (preambleIsFolded) {
+        unfoldPreamble(startLine);
+        preambleIsFolded = false;
+      } else {
+        foldPreamble(startLine);
+        preambleIsFolded = true;
+      }
     }
   );
 
