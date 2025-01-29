@@ -58,9 +58,6 @@ export function activate(context: vscode.ExtensionContext) {
       context.subscriptions.push(providerDisposable);
 
       preambleIsFolded ? foldPreamble(startLine) : unfoldPreamble(startLine);
-      vscode.window.showInformationMessage(
-        preambleIsFolded ? 'fold' : 'unfold'
-      );
     }
   );
   context.subscriptions.push(editorChangeDisposable);
